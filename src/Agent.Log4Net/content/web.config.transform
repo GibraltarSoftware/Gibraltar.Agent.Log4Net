@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <configSections>
+    <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" />
+  </configSections>
+  <log4net>
+    <appender name="GibraltarAppender" type="Gibraltar.Agent.Log4Net.GibraltarAppender, Gibraltar.Agent.Log4Net" >
+      <param name="EndSessionOnAppenderClose" value="false" /> <!-- This is optional; it is false by default -->
+    </appender>
+    <root>
+      <level value="ALL" />
+      <appender-ref ref="GibraltarAppender" />
+    </root>
+  </log4net>
+</configuration>
