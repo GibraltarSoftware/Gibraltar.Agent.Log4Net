@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Gibraltar.Agent.Log4Net</id>
+    <version>$version$</version>
+    <title>Loupe Agent for Log4Net</title>
+    <authors>Gibraltar Software</authors>
+    <owners>Gibraltar Software</owners>
+    <copyright>Copyright © 2008-2015 Gibraltar Software, Inc.</copyright>
+    <licenseUrl>https://github.com/GibraltarSoftware/Gibraltar.Agent.Log4Net/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/GibraltarSoftware/Gibraltar.Agent.Log4Net</projectUrl>
+    <iconUrl>http://www.gibraltarsoftware.com/loupe.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A Log4Net Appender that connects it to the Loupe Agent - a black box for recording diagnostic information for your .NET application.</description>
+    <summary />
+    <tags>Loupe Logging</tags>
+  </metadata>
+  <files>
+    <file src="content\*.*" target="content" />
+  </files>
+</package>
