@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Gibraltar.Agent.Log4Net</id>
-    <version>$version$-beta</version>
+    <version>$version$</version>
     <title>Loupe Agent for Log4Net</title>
     <authors>Gibraltar Software</authors>
     <owners>Gibraltar Software</owners>
