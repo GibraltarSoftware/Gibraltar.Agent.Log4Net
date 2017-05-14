@@ -31,9 +31,8 @@ namespace Gibraltar.Agent.Log4Net
     /// automatically capture logging data from Log4Net and record it into the current 
     /// log file, along with any other logging information that is being captured such as
     /// metrics and information from trace logging.</remarks>
-    public class GibraltarAppender : IAppender, IDisposable
+    public class GibraltarAppender : AppenderSkeleton, IDisposable
     {
-        private string _name;
         private bool _disposed;
 
         private const int SeverityCriticalDefault = 90000; // from log4net.Core.Level.Critical.Value
@@ -694,13 +693,12 @@ namespace Gibraltar.Agent.Log4Net
             EndSessionOnAppenderClose = false; // Also handy for a breakpoint.
         }
 
-        #region IAppender Members
+        #region AppenderSkeleton Members
 
         /// <summary>
-        /// Close the appender
+        /// Called when the appender is closed
         /// </summary>
-        /// <remarks>Required as part of the Log4Net IAppender interface implementation.</remarks>
-        public void Close()
+        protected override void OnClose()
         {
             // We only really close our central Gibraltar Log when the application is actually exiting, because
             // log4net might allow appenders like us to be removed and new ones attached without exiting the process.
@@ -724,7 +722,7 @@ namespace Gibraltar.Agent.Log4Net
         /// and where to write it out, therefore not all Log4Net logging events may be chosen to be permanently recorded</para>
         /// <para>Required as part of the Log4Net IAppender interface implementation.</para></remarks>
         /// <param name="loggingEvent">The individual LoggingEvent to be appended.</param>
-        public void DoAppend( LoggingEvent loggingEvent )
+        protected override void Append(LoggingEvent loggingEvent)
         {
             // We shouldn't need a lock in this method because we don't access any of our member variables here,
             // and we don't need a recursion-guard because we don't send our own log events through log4net.
@@ -758,7 +756,7 @@ namespace Gibraltar.Agent.Log4Net
             IMessageSourceProvider messageSource = new LogMessageSource(locationInfo); // Wrap it with our converter
             Exception exception = loggingEvent.ExceptionObject;
             string loggerName = loggingEvent.LoggerName;
-            string message = loggingEvent.RenderedMessage;
+            string message = Layout != null ? RenderLoggingEvent(loggingEvent) : loggingEvent.RenderedMessage;
             string userName = loggingEvent.Identity;
             if (string.IsNullOrEmpty(userName))
             {
@@ -778,12 +776,6 @@ namespace Gibraltar.Agent.Log4Net
                 Log.Write(severity, "Log4Net", messageSource, userName, exception, LogWriteMode.Queued, null, loggerName, null, message); 
             }
         }
-
-        /// <summary>
-        /// A name for this appender.
-        /// </summary>
-        /// <remarks>Required as part of the Log4Net IAppender interface implementation.</remarks>
-        public string Name { get { return _name; } set { _name = value; } }
 
         #endregion
 

@@ -23,6 +23,7 @@ namespace Log4NetTest
     {
         private readonly string m_Name;
         private readonly ILog log;
+        private static int m_instance = 0;
 
         public BusyWork( string name )
         {
@@ -40,12 +41,17 @@ namespace Log4NetTest
 
         private void ThreadProc( object info )
         {
-            int count = ( int )info;
+            int instance = Interlocked.Increment(ref m_instance);
 
-            for ( int i = 1; i <= count; i++ )
+            using ( NDC.Push( instance.ToString()))
             {
-                log.DebugFormat( "{0} message {1} of {2}", m_Name, i, count );
-                Thread.Sleep( 500 );
+                int count = (int) info;
+
+                for (int i = 1; i <= count; i++)
+                {
+                    log.DebugFormat("{0} message {1} of {2}", m_Name, i, count);
+                    Thread.Sleep(500);
+                }
             }
         }
     }
